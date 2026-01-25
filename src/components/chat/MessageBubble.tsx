@@ -11,16 +11,34 @@ interface MessageBubbleProps {
 }
 
 export function MessageBubble({ message, isCurrentUser }: MessageBubbleProps) {
+  const time = new Date(message.createdAt).toLocaleTimeString('en-US', { 
+    hour: '2-digit', 
+    minute: '2-digit' 
+  })
+  
   return (
     <div
       className={cn(
-        "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm",
-        isCurrentUser
-          ? "ml-auto bg-primary text-primary-foreground"
-          : "bg-muted"
+        "flex w-full animate-slide-in",
+        isCurrentUser ? "justify-end" : "justify-start"
       )}
     >
-      {message.content}
+      <div
+        className={cn(
+          "flex flex-col gap-1 max-w-[75%] rounded-lg px-4 py-2 text-sm shadow-sm transition-all duration-200 hover:shadow-md",
+          isCurrentUser
+            ? "bg-primary text-primary-foreground"
+            : "bg-muted"
+        )}
+      >
+        <p className="break-words">{message.content}</p>
+        <span className={cn(
+          "text-xs self-end",
+          isCurrentUser ? "text-primary-foreground/70" : "text-muted-foreground"
+        )}>
+          {time}
+        </span>
+      </div>
     </div>
   )
 }

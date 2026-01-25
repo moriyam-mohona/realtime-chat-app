@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useRouter } from "next/navigation"
+import { Eye, EyeOff } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -17,6 +18,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Spinner } from "@/components/ui/spinner"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -32,10 +34,13 @@ const formSchema = z.object({
 
 export function SignupForm() {
   const router = useRouter()
+  const [showPassword, setShowPassword] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
+  
   const {
     register,
     handleSubmit,
-    formState: { errors, isLoading },
+    formState: { errors },
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,13 +50,19 @@ export function SignupForm() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true)
     console.log("Signup Values:", values)
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    setIsLoading(false)
     router.push("/dashboard")
   }
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full max-w-sm glass-card animate-fade-in">
       <CardHeader>
         <CardTitle className="text-2xl">Sign Up</CardTitle>
         <CardDescription>
@@ -65,11 +76,11 @@ export function SignupForm() {
             <Input
               id="name"
               placeholder="John Doe"
-              required
               {...register("name")}
+              className="transition-all duration-200 focus:scale-[1.01]"
             />
             {errors.name && (
-              <p className="text-sm text-red-500">{errors.name.message}</p>
+              <p className="text-sm text-destructive animate-slide-in">{errors.name.message}</p>
             )}
           </div>
           <div className="grid gap-2">
@@ -78,33 +89,57 @@ export function SignupForm() {
               id="email"
               type="email"
               placeholder="m@example.com"
-              required
               {...register("email")}
+              className="transition-all duration-200 focus:scale-[1.01]"
             />
             {errors.email && (
-              <p className="text-sm text-red-500">{errors.email.message}</p>
+              <p className="text-sm text-destructive animate-slide-in">{errors.email.message}</p>
             )}
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              required
-              {...register("password")}
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                {...register("password")}
+                className="pr-10 transition-all duration-200 focus:scale-[1.01]"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
             {errors.password && (
-              <p className="text-sm text-red-500">{errors.password.message}</p>
+              <p className="text-sm text-destructive animate-slide-in">{errors.password.message}</p>
             )}
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
-          <Button className="w-full" type="submit" disabled={isLoading}>
-            Create account
+          <Button 
+            className="w-full transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]" 
+            type="submit" 
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <Spinner size="sm" className="mr-2" />
+                Creating account...
+              </>
+            ) : (
+              "Create account"
+            )}
           </Button>
           <div className="text-center text-sm">
             Already have an account?{" "}
-            <a href="/" className="underline underline-offset-4">
+            <a href="/" className="underline underline-offset-4 hover:text-primary transition-colors">
               Sign in
             </a>
           </div>

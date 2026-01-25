@@ -16,12 +16,14 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Spinner } from "@/components/ui/spinner"
 import { mockFriends } from "@/lib/data"
 
 export function CreateGroupDialog() {
   const [open, setOpen] = React.useState(false)
   const [groupName, setGroupName] = React.useState("")
   const [selectedFriends, setSelectedFriends] = React.useState<string[]>([])
+  const [isLoading, setIsLoading] = React.useState(false)
 
   const handleFriendToggle = (friendId: string) => {
     setSelectedFriends((prev) =>
@@ -31,9 +33,14 @@ export function CreateGroupDialog() {
     )
   }
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
+    setIsLoading(true)
     console.log("Create Group:", { groupName, selectedFriends })
-    // Simulate backend call
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    setIsLoading(false)
     setOpen(false)
     setGroupName("")
     setSelectedFriends([])
@@ -42,12 +49,12 @@ export function CreateGroupDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="transition-all duration-200 hover:scale-105 active:scale-95">
           <Plus className="mr-2 h-4 w-4" />
           Create Group
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] glass-card">
         <DialogHeader>
           <DialogTitle>Create Group Chat</DialogTitle>
           <DialogDescription>
@@ -62,16 +69,19 @@ export function CreateGroupDialog() {
             <Input
               id="name"
               placeholder="Cool Group"
-              className="col-span-3"
+              className="col-span-3 transition-all duration-200 focus:scale-[1.01]"
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}
             />
           </div>
           <div className="grid gap-4">
              <Label>Select Friends</Label>
-             <div className="flex flex-col gap-2 max-h-[200px] overflow-y-auto">
+             <div className="flex flex-col gap-2 max-h-[200px] overflow-y-auto scrollbar-thin">
                 {mockFriends.map((friend) => (
-                    <div key={friend.id} className="flex items-center space-x-2">
+                    <div 
+                      key={friend.id} 
+                      className="flex items-center space-x-2 p-2 rounded-lg hover:bg-muted/50 transition-all duration-200"
+                    >
                         <Checkbox
                             id={friend.id}
                             checked={selectedFriends.includes(friend.id)}
@@ -79,8 +89,13 @@ export function CreateGroupDialog() {
                         />
                         <label
                             htmlFor={friend.id}
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex items-center gap-2 flex-1"
                         >
+                            <img 
+                              src={friend.avatar} 
+                              alt={friend.name} 
+                              className="h-6 w-6 rounded-full" 
+                            />
                             {friend.name}
                         </label>
                     </div>
@@ -89,7 +104,20 @@ export function CreateGroupDialog() {
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={handleCreate} disabled={!groupName || selectedFriends.length === 0}>Create Group</Button>
+          <Button 
+            onClick={handleCreate} 
+            disabled={!groupName || selectedFriends.length === 0 || isLoading}
+            className="transition-all duration-200 hover:scale-105 active:scale-95"
+          >
+            {isLoading ? (
+              <>
+                <Spinner size="sm" className="mr-2" />
+                Creating...
+              </>
+            ) : (
+              "Create Group"
+            )}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
