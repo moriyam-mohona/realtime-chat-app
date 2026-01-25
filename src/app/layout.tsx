@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
 import { ErrorBoundary } from "@/components/ErrorBoundary"
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-sans antialiased`}
       >
+        <NextTopLoader color="#3b82f6" showSpinner={false} />
         <ErrorBoundary>
           <ThemeProvider
               attribute="class"

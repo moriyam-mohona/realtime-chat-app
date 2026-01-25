@@ -17,13 +17,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Spinner } from "@/components/ui/spinner"
-import { mockFriends } from "@/lib/data"
+import { mockUsers, currentUser } from "@/lib/data"
 
 export function CreateGroupDialog() {
   const [open, setOpen] = React.useState(false)
   const [groupName, setGroupName] = React.useState("")
   const [selectedFriends, setSelectedFriends] = React.useState<string[]>([])
   const [isLoading, setIsLoading] = React.useState(false)
+
+  const friends = mockUsers.filter(u => u.id !== currentUser.id)
 
   const handleFriendToggle = (friendId: string) => {
     setSelectedFriends((prev) =>
@@ -77,7 +79,7 @@ export function CreateGroupDialog() {
           <div className="grid gap-4">
              <Label>Select Friends</Label>
              <div className="flex flex-col gap-2 max-h-[200px] overflow-y-auto scrollbar-thin">
-                {mockFriends.map((friend) => (
+                {friends.map((friend) => (
                     <div 
                       key={friend.id} 
                       className="flex items-center space-x-2 p-2 rounded-lg hover:bg-muted/50 transition-all duration-200"

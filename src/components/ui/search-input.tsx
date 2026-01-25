@@ -19,6 +19,8 @@ export function SearchInput({
 }: SearchInputProps) {
   const [value, setValue] = React.useState("")
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
+  const onSearchRef = React.useRef(onSearch)
+  onSearchRef.current = onSearch
 
   React.useEffect(() => {
     if (timeoutRef.current) {
@@ -26,7 +28,7 @@ export function SearchInput({
     }
 
     timeoutRef.current = setTimeout(() => {
-      onSearch?.(value)
+      onSearchRef.current?.(value)
     }, debounceMs)
 
     return () => {
@@ -34,7 +36,7 @@ export function SearchInput({
         clearTimeout(timeoutRef.current)
       }
     }
-  }, [value, debounceMs, onSearch])
+  }, [value, debounceMs])
 
   const handleClear = () => {
     setValue("")

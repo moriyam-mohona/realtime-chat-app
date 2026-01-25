@@ -15,16 +15,18 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { EmptyState } from "@/components/ui/empty-state"
 import { SearchInput } from "@/components/ui/search-input"
-import { mockFriends } from "@/lib/data"
+import { mockUsers, currentUser } from "@/lib/data"
 
 export function FriendsList() {
   const router = useRouter()
   const [isLoading, setIsLoading] = React.useState(true)
   const [searchQuery, setSearchQuery] = React.useState("")
   
-  const filteredFriends = mockFriends.filter(friend =>
-    friend.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    friend.email.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredFriends = mockUsers.filter(user =>
+    user.id !== currentUser.id && (
+        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase())
+    )
   )
 
   React.useEffect(() => {

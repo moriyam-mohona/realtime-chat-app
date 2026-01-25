@@ -6,7 +6,7 @@ import { LayoutDashboard, MessageSquare, Users, UserPlus, LogOut } from "lucide-
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "./ThemeToggle"
 import { SettingsDialog } from "./SettingsDialog"
-import { SearchInput } from "@/components/ui/search-input"
+import { ConversationList } from "@/components/chat/ConversationList"
 import { currentUser } from "@/lib/data"
 
 export function Sidebar() {
@@ -35,12 +35,15 @@ export function Sidebar() {
         </div>
       </div>
       
-      <div className="px-4 py-4">
-        <SearchInput placeholder="Search..." className="w-full" />
+      <div className="flex-1 overflow-hidden">
+         <div className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+            Conversations
+         </div>
+         <ConversationList />
       </div>
       
-      <div className="flex-1 overflow-auto py-2 scrollbar-thin">
-         <nav className="grid items-start px-2 text-sm font-medium lg:px-4 gap-1">
+      <div className="mt-auto border-t">
+         <nav className="grid items-start px-4 py-3 gap-1">
             {routes.map((route) => (
                 <Link
                    key={route.href}
@@ -53,7 +56,7 @@ export function Sidebar() {
                    )}
                 >
                     <route.icon className="h-4 w-4" />
-                    {route.label}
+                    <span className="text-xs font-medium">{route.label}</span>
                 </Link>
             ))}
          </nav>
