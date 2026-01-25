@@ -1,0 +1,26 @@
+import { cn } from "@/lib/utils"
+
+interface MessageBubbleProps {
+  message: {
+    id: string
+    content: string
+    createdAt: string
+    senderId: string
+  }
+  isCurrentUser: boolean
+}
+
+export function MessageBubble({ message, isCurrentUser }: MessageBubbleProps) {
+  return (
+    <div
+      className={cn(
+        "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm",
+        isCurrentUser
+          ? "ml-auto bg-primary text-primary-foreground"
+          : "bg-muted"
+      )}
+    >
+      {message.content}
+    </div>
+  )
+}
