@@ -1,5 +1,6 @@
 "use client"
 import * as React from "react"
+import { cn } from "@/lib/utils"
 import { Phone, Video, Info, ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
 
@@ -27,7 +28,7 @@ interface Message {
 
 export function ChatWindow({ friend, group }: ChatWindowProps) {
   const router = useRouter()
-  const [messages, setMessages] = React.useState<Message[]>([
+  const [messages, setMessages] = React.useState<Message[]>(() => [
      { id: '1', content: 'Hey there!', createdAt: new Date(Date.now() - 3600000).toISOString(), senderId: friend?.id || 'u2', senderName: friend?.name || 'Sarah Smith' },
      { id: '2', content: 'Hello! How are you?', createdAt: new Date(Date.now() - 1800000).toISOString(), senderId: currentUser.id }
   ])
@@ -158,4 +159,4 @@ export function ChatWindow({ friend, group }: ChatWindowProps) {
   )
 }
 
-import { cn } from "@/lib/utils"
+

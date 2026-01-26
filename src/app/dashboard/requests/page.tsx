@@ -4,7 +4,7 @@ import * as React from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { RequestList } from "@/components/friends/RequestList"
 import { FindPeople } from "@/components/friends/FindPeople"
-import { MessageSquare, UserPlus, Send, Search } from "lucide-react"
+import { UserPlus, Send, Search } from "lucide-react"
 
 export default function RequestsPage() {
   return (

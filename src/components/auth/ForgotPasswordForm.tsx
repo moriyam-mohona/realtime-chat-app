@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -101,9 +102,9 @@ export function ForgotPasswordForm() {
             </Button>
             <div className="text-center text-sm">
               Remember your password?{" "}
-              <a href="/" className="underline underline-offset-4 hover:text-primary transition-colors">
+              <Link href="/" className="underline underline-offset-4 hover:text-primary transition-colors">
                 Sign in
-              </a>
+              </Link>
             </div>
           </CardFooter>
         </form>

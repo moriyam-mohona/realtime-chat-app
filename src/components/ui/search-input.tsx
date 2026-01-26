@@ -20,7 +20,10 @@ export function SearchInput({
   const [value, setValue] = React.useState("")
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
   const onSearchRef = React.useRef(onSearch)
-  onSearchRef.current = onSearch
+  // Update ref when onSearch changes
+  React.useEffect(() => {
+    onSearchRef.current = onSearch
+  }, [onSearch])
 
   React.useEffect(() => {
     if (timeoutRef.current) {
